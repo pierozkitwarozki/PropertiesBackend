@@ -58,7 +58,9 @@ namespace API.Services
 
                     var token = tokenHandler.CreateToken(tokenDescriptor);
 
-                    return new TokenToReturn { Token = tokenHandler.WriteToken(token) };
+                    var userDetail = _mapper.Map<UserDetail>(user);
+
+                    return new TokenToReturn { Token = tokenHandler.WriteToken(token), User = userDetail };
                 }
 
                 throw new Exception("Zła nazwa użytkownika lub hasło!");

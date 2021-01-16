@@ -28,7 +28,7 @@ namespace API.Repos
 
         public async Task<IEnumerable<Property>> GetAllAsync()
         {
-            return await _context.Property.ToListAsync();
+            return await _context.Property.Include(x => x.District).ToListAsync();
         }
 
         public async Task<IEnumerable<Property>> GetForDistrict(int districtId)
@@ -39,7 +39,8 @@ namespace API.Repos
 
         public async Task<Property> GetSingleAsync(int propertyId)
         {
-            return await _context.Property.FindAsync(propertyId);
+            return await _context.Property.Include(x => x.District)
+                .SingleOrDefaultAsync(x => x.Id == propertyId);
         }
 
         public async Task<bool> SaveAllAsync()

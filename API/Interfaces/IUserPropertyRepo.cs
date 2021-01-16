@@ -11,6 +11,6 @@ namespace API.Interfaces
          Task<bool> SaveAllAsync();
          Task<UserProperty> GetSingleAsync(int userId, int propertyId);
          Task<IEnumerable<UserProperty>> GetAllAsync();
-         Task<IEnumerable<Property>> GetForUser(int userId);
+         Task<IEnumerable<Property>> GetForUserAsync(int userId);
     }
 }

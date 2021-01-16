@@ -62,6 +62,9 @@ namespace API
 
             // Services
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IDistrictService, DistrictService>();
+            services.AddScoped<IPropertyService, PropertyService>();
+            services.AddScoped<IUserPropertyService, UserPropertyService>();
             
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>

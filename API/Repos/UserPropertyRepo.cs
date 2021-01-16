@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Repos
 {
+    
     public class UserPropertyRepo : IUserPropertyRepo
     {
         private readonly DatabaseContext _context;
@@ -28,10 +29,11 @@ namespace API.Repos
 
         public async Task<IEnumerable<UserProperty>> GetAllAsync()
         {
-            return await _context.UserProperty.ToListAsync();
+            return await _context.UserProperty
+                .Include(x => x.Property).ThenInclude(x => x.District).ToListAsync();
         }
 
-        public async Task<IEnumerable<Property>> GetForUser(int userId)
+        public async Task<IEnumerable<Property>> GetForUserAsync(int userId)
         {
             return await _context
                 .UserProperty.Where(x => x.UserId == userId)
@@ -41,7 +43,7 @@ namespace API.Repos
 
         public async Task<UserProperty> GetSingleAsync(int userId, int propertyId)
         {
-            return await _context.UserProperty.FindAsync(new { propertyId, userId });
+            return await _context.UserProperty.FindAsync(propertyId, userId);
         }
 
         public async Task<bool> SaveAllAsync()
