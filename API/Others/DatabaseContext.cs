@@ -7,27 +7,27 @@ namespace API.Others
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {}
 
-        public DbSet<User> User { get; set; }
-        public DbSet<District> District { get; set; }
-        public DbSet<Property> Property { get; set; }
-        public DbSet<UserProperty> UserProperty { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Property> Properties { get; set; }
+        public DbSet<UserDistrict> UserDistricts { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<UserProperty>()
-                .HasKey(x => new { x.PropertyId, x.UserId });
+            builder.Entity<UserDistrict>()
+                .HasKey(x => new { x.DistrctId, x.UserId });
                 
             builder.Entity<User>()
-                .HasMany(x => x.UserProperties)
+                .HasMany(x => x.UserDistricts)
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId)
                 .IsRequired();
 
-            builder.Entity<Property>()
-                .HasMany(x => x.UserProperties)
-                .WithOne(x => x.Property)
-                .HasForeignKey(x => x.PropertyId)
+            builder.Entity<District>()
+                .HasMany(x => x.UserDistricts)
+                .WithOne(x => x.District)
+                .HasForeignKey(x => x.DistrctId)
                 .IsRequired();
 
             builder.Entity<Property>()

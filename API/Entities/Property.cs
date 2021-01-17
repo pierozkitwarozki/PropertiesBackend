@@ -16,6 +16,6 @@ namespace API.Entities
         public DateTime Date { get; set; }
         public int DistrictId { get; set; }
         public District District { get; set; }
-        public ICollection<UserProperty> UserProperties { get; set; }
+        
     }
 }

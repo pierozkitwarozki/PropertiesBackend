@@ -27,7 +27,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("District");
+                    b.ToTable("Districts");
                 });
 
             modelBuilder.Entity("API.Entities.Property", b =>
@@ -67,7 +67,7 @@ namespace API.Migrations
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("Property");
+                    b.ToTable("Properties");
                 });
 
             modelBuilder.Entity("API.Entities.User", b =>
@@ -93,22 +93,22 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("API.Entities.UserProperty", b =>
+            modelBuilder.Entity("API.Entities.UserDistrict", b =>
                 {
-                    b.Property<int>("PropertyId")
+                    b.Property<int>("DistrctId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("PropertyId", "UserId");
+                    b.HasKey("DistrctId", "UserId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserProperty");
+                    b.ToTable("UserDistricts");
                 });
 
             modelBuilder.Entity("API.Entities.Property", b =>
@@ -122,21 +122,21 @@ namespace API.Migrations
                     b.Navigation("District");
                 });
 
-            modelBuilder.Entity("API.Entities.UserProperty", b =>
+            modelBuilder.Entity("API.Entities.UserDistrict", b =>
                 {
-                    b.HasOne("API.Entities.Property", "Property")
-                        .WithMany("UserProperties")
-                        .HasForeignKey("PropertyId")
+                    b.HasOne("API.Entities.District", "District")
+                        .WithMany("UserDistricts")
+                        .HasForeignKey("DistrctId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Entities.User", "User")
-                        .WithMany("UserProperties")
+                        .WithMany("UserDistricts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Property");
+                    b.Navigation("District");
 
                     b.Navigation("User");
                 });
@@ -144,16 +144,13 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.District", b =>
                 {
                     b.Navigation("Properties");
-                });
 
-            modelBuilder.Entity("API.Entities.Property", b =>
-                {
-                    b.Navigation("UserProperties");
+                    b.Navigation("UserDistricts");
                 });
 
             modelBuilder.Entity("API.Entities.User", b =>
                 {
-                    b.Navigation("UserProperties");
+                    b.Navigation("UserDistricts");
                 });
 #pragma warning restore 612, 618
         }

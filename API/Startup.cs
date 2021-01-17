@@ -58,13 +58,13 @@ namespace API
             services.AddScoped<IPropertyRepo, PropertyRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IDistrictRepo, DistrictRepo>();
-            services.AddScoped<IUserPropertyRepo, UserPropertyRepo>();
+            services.AddScoped<IUserDistrictRepo, UserDistrictRepo>();
 
             // Services
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IDistrictService, DistrictService>();
             services.AddScoped<IPropertyService, PropertyService>();
-            services.AddScoped<IUserPropertyService, UserPropertyService>();
+            services.AddScoped<IUserDistrictService, UserDistrictService>();
             
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>

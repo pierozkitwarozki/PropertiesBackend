@@ -28,18 +28,18 @@ namespace API.Repos
 
         public async Task<IEnumerable<Property>> GetAllAsync()
         {
-            return await _context.Property.Include(x => x.District).ToListAsync();
+            return await _context.Properties.Include(x => x.District).ToListAsync();
         }
 
         public async Task<IEnumerable<Property>> GetForDistrict(int districtId)
         {
-            return await _context.Property.Where(x => x.DistrictId == districtId)
+            return await _context.Properties.Where(x => x.DistrictId == districtId)
                 .Include(x => x.District).ToListAsync();
         }
 
         public async Task<Property> GetSingleAsync(int propertyId)
         {
-            return await _context.Property.Include(x => x.District)
+            return await _context.Properties.Include(x => x.District)
                 .SingleOrDefaultAsync(x => x.Id == propertyId);
         }
 

@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitalCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "District",
+                name: "Districts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -17,11 +17,11 @@ namespace API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_District", x => x.Id);
+                    table.PrimaryKey("PK_Districts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -34,11 +34,11 @@ namespace API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Property",
+                name: "Properties",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -55,63 +55,63 @@ namespace API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Property", x => x.Id);
+                    table.PrimaryKey("PK_Properties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Property_District_DistrictId",
+                        name: "FK_Properties_Districts_DistrictId",
                         column: x => x.DistrictId,
-                        principalTable: "District",
+                        principalTable: "Districts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserProperty",
+                name: "UserDistricts",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    PropertyId = table.Column<int>(type: "INTEGER", nullable: false)
+                    DistrctId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserProperty", x => new { x.PropertyId, x.UserId });
+                    table.PrimaryKey("PK_UserDistricts", x => new { x.DistrctId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_UserProperty_Property_PropertyId",
-                        column: x => x.PropertyId,
-                        principalTable: "Property",
+                        name: "FK_UserDistricts_Districts_DistrctId",
+                        column: x => x.DistrctId,
+                        principalTable: "Districts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserProperty_User_UserId",
+                        name: "FK_UserDistricts_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Property_DistrictId",
-                table: "Property",
+                name: "IX_Properties_DistrictId",
+                table: "Properties",
                 column: "DistrictId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserProperty_UserId",
-                table: "UserProperty",
+                name: "IX_UserDistricts_UserId",
+                table: "UserDistricts",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserProperty");
+                name: "Properties");
 
             migrationBuilder.DropTable(
-                name: "Property");
+                name: "UserDistricts");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Districts");
 
             migrationBuilder.DropTable(
-                name: "District");
+                name: "Users");
         }
     }
 }

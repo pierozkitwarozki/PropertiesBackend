@@ -33,12 +33,12 @@ namespace API.Repos
 
         public async Task<District> GetSingleAsync(int districtId)
         {
-            return await _context.District.FindAsync(districtId);
+            return await _context.Districts.FindAsync(districtId);
         }
 
         public async Task<IEnumerable<District>> GetAllAsync()
         {
-            return await _context.District.ToListAsync();
+            return await _context.Districts.ToListAsync();
         }
 
     }

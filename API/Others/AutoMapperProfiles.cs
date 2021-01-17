@@ -14,7 +14,7 @@ namespace API.Others
             CreateMap<DistrictToAdd, District>().ReverseMap();
             CreateMap<PropertyToAdd, Property>();
             CreateMap<User, UserDetail>();
-            CreateMap<UserPropertyToAdd, UserProperty>();
+            CreateMap<UserDistrictToAdd, UserDistrict>();
             
         }
     }

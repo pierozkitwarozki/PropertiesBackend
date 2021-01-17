@@ -7,6 +7,6 @@ namespace API.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public ICollection<Property> Properties { get; set; }
-        
+        public ICollection<UserDistrict> UserDistricts { get; set; }
     }
 }

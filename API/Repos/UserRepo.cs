@@ -27,23 +27,23 @@ namespace API.Repos
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _context.User.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
         public async Task<User> GetSingleAsync(int userId)
         {
-            return await _context.User.FindAsync(userId);
+            return await _context.Users.FindAsync(userId);
         }
 
         public async Task<User> GetSingleAsync(string userName)
         {
-            return await _context.User
+            return await _context.Users
                 .FirstOrDefaultAsync(x => x.UserName == userName);
         }
 
         public async Task<bool> IsUsernameTaken(string userName)
         {
-            return await _context.User.FirstOrDefaultAsync(x => x.UserName == userName) != null;
+            return await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName) != null;
         }
 
         public async Task<bool> SaveAllAsync()

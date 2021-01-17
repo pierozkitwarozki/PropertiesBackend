@@ -10,21 +10,21 @@ namespace API.Controllers
     //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UserPropertyController : ControllerBase
+    public class UserDistrictController : ControllerBase
     {
-        private readonly IUserPropertyService _service;
+        private readonly IUserDistrictService _service;
 
-        public UserPropertyController(IUserPropertyService service)
+        public UserDistrictController(IUserDistrictService service)
         {
             _service = service;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAsync(UserPropertyToAdd propertyToAdd)
+        public async Task<IActionResult> AddAsync(UserDistrictToAdd districtToAdd)
         {
             try
             {
-                return Ok(await _service.AddAsync(propertyToAdd));
+                return Ok(await _service.AddAsync(districtToAdd));
             }
             catch(Exception e)
             {
@@ -32,12 +32,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("{userId}/{propertyId}")]
-        public async Task<IActionResult> DeleteAsync(int userId, int propertyId)
+        [HttpDelete("{userId}/{districtId}")]
+        public async Task<IActionResult> DeleteAsync(int userId, int districtId)
         {
             try
             {
-                return Ok(await _service.DeleteAsync(userId, propertyId));
+                return Ok(await _service.DeleteAsync(userId, districtId));
             }
             catch(Exception e)
             {
@@ -45,12 +45,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("{userId}/{propertyId}")]
-        public async Task<IActionResult> GetSingleAsync(int userId, int propertyId)
+        [HttpGet("{userId}/{districtId}")]
+        public async Task<IActionResult> GetSingleAsync(int userId, int districtId)
         {
             try
             {
-                return Ok(await _service.GetSingleAsync(userId, propertyId));
+                return Ok(await _service.GetSingleAsync(userId, districtId));
             }
             catch(Exception e)
             {

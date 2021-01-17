@@ -8,19 +8,19 @@ using AutoMapper;
 
 namespace API.Services
 {
-    public class UserPropertyService : IUserPropertyService
+    public class UserDistrictService : IUserDistrictService
     {
         private readonly IMapper _mapper;
-        private readonly IUserPropertyRepo _repo;
+        private readonly IUserDistrictRepo _repo;
 
-        public UserPropertyService(IMapper mapper, IUserPropertyRepo repo)
+        public UserDistrictService(IMapper mapper, IUserDistrictRepo repo)
         {
             _mapper =  mapper;
             _repo = repo;
         }
-        public async Task<IAsyncResult> AddAsync(UserPropertyToAdd userProperty)
+        public async Task<IAsyncResult> AddAsync(UserDistrictToAdd userProperty)
         {
-            var dist = _mapper.Map<UserProperty>(userProperty);
+            var dist = _mapper.Map<UserDistrict>(userProperty);
 
             await _repo.AddAsync(dist);
 
@@ -45,17 +45,17 @@ namespace API.Services
             throw new Exception("Nie ma takiej pary.");   
         }
 
-        public async Task<IEnumerable<UserProperty>> GetAllAsync()
+        public async Task<IEnumerable<UserDistrict>> GetAllAsync()
         {
             return await _repo.GetAllAsync();
         }
 
-        public async Task<IEnumerable<PropertyToReturn>> GetForUserAsync(int userId)
+        public async Task<IEnumerable<District>> GetForUserAsync(int userId)
         {
-            return _mapper.Map<IEnumerable<PropertyToReturn>>(await _repo.GetForUserAsync(userId));
+            return _mapper.Map<IEnumerable<District>>(await _repo.GetForUserAsync(userId));
         }
 
-        public async Task<UserProperty> GetSingleAsync(int userId, int propertyId)
+        public async Task<UserDistrict> GetSingleAsync(int userId, int propertyId)
         {
             return await _repo.GetSingleAsync(userId, propertyId);
         }
