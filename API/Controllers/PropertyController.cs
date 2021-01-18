@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using API.Dtos;
 using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

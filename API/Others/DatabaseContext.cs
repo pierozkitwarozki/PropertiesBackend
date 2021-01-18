@@ -11,6 +11,7 @@ namespace API.Others
         public DbSet<District> Districts { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<UserDistrict> UserDistricts { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
