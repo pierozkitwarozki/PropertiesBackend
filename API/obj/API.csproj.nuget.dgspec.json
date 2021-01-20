@@ -1,25 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "/Users/bartlomiejpierog/VS Code Projects/PropertiesBackend/API/API.csproj": {}
+    "D:\\Users\\Bart\\VS_Code_Projects\\PropertiesBackend\\api\\API.csproj": {}
   },
   "projects": {
-    "/Users/bartlomiejpierog/VS Code Projects/PropertiesBackend/API/API.csproj": {
+    "D:\\Users\\Bart\\VS_Code_Projects\\PropertiesBackend\\api\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/bartlomiejpierog/VS Code Projects/PropertiesBackend/API/API.csproj",
+        "projectUniqueName": "D:\\Users\\Bart\\VS_Code_Projects\\PropertiesBackend\\api\\API.csproj",
         "projectName": "API",
-        "projectPath": "/Users/bartlomiejpierog/VS Code Projects/PropertiesBackend/API/API.csproj",
-        "packagesPath": "/Users/bartlomiejpierog/.nuget/packages/",
-        "outputPath": "/Users/bartlomiejpierog/VS Code Projects/PropertiesBackend/API/obj/",
+        "projectPath": "D:\\Users\\Bart\\VS_Code_Projects\\PropertiesBackend\\api\\API.csproj",
+        "packagesPath": "C:\\Users\\Bartłomiej\\.nuget\\packages\\",
+        "outputPath": "D:\\Users\\Bart\\VS_Code_Projects\\PropertiesBackend\\api\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "/Users/bartlomiejpierog/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Bartłomiej\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -107,7 +114,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.101/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

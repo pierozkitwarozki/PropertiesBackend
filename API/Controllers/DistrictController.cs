@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    //[Authorize]
     [Authorize(Policy = "RequireUserRole")]
     [Route("api/[controller]")]
     [ApiController]
