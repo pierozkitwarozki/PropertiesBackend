@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using API.Entities;
 using API.Interfaces;
 using API.Others;
 using API.Repos;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -65,7 +67,24 @@ namespace API
             services.AddScoped<IDistrictService, DistrictService>();
             services.AddScoped<IPropertyService, PropertyService>();
             services.AddScoped<IUserDistrictService, UserDistrictService>();
+            services.AddScoped<ITokenService, TokenService>();
             
+            services.AddIdentityCore<AppUser>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireDigit = false;
+                opt.Password.RequiredLength = 5;
+                opt.Password.RequiredUniqueChars = 0;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+            })
+                .AddRoles<AppRole>()
+                .AddRoleManager<RoleManager<AppRole>>()
+                .AddSignInManager<SignInManager<AppUser>>()
+                .AddRoleValidator<RoleValidator<AppRole>>()
+                .AddEntityFrameworkStores<DatabaseContext>();
+
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
                {
@@ -77,7 +96,15 @@ namespace API
                        ValidateIssuer = false,
                        ValidateAudience = false,
                    };
+
                });
+
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("RequireUserRole", policy => policy.RequireRole("User", "Admin"));
+            });
+
                
             services.AddSwaggerGen(c =>
             {

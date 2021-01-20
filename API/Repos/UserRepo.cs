@@ -15,30 +15,30 @@ namespace API.Repos
         {
             _context = context;
         }
-        public async Task AddAsync(User user)
+        public async Task AddAsync(AppUser user)
         {
             await _context.AddAsync(user);
         }
 
-        public void Delete(User user)
+        public void Delete(AppUser user)
         {
             _context.Remove(user);
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<AppUser>> GetAllAsync()
         {
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<User> GetSingleAsync(int userId)
+        public async Task<AppUser> GetSingleAsync(int userId)
         {
             return await _context.Users.FindAsync(userId);
         }
 
-        public async Task<User> GetSingleAsync(string userName)
+        public async Task<AppUser> GetSingleAsync(string userName)
         {
-            return await _context.Users
-                .FirstOrDefaultAsync(x => x.UserName == userName);
+            return await _context.Users.Include(x => x.UserRoles)
+                .ThenInclude(x => x.Role).SingleAsync(x => x.UserName == userName);
         }
 
         public async Task<bool> IsUsernameTaken(string userName)

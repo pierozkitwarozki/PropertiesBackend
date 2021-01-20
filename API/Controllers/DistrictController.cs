@@ -2,11 +2,13 @@ using System;
 using System.Threading.Tasks;
 using API.Dtos;
 using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     //[Authorize]
+    [Authorize(Policy = "RequireUserRole")]
     [Route("api/[controller]")]
     [ApiController]
     public class DistrictController : ControllerBase
@@ -18,6 +20,7 @@ namespace API.Controllers
             _service = service;
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost]
         public async Task<IActionResult> AddAsync(DistrictToAdd districtToAdd)
         {
@@ -31,6 +34,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpDelete("{districtId}")]
         public async Task<IActionResult> DeleteAsync(int districtId)
         {

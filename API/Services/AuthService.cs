@@ -8,6 +8,7 @@ using API.Entities;
 using API.Interfaces;
 using API.Others;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -15,85 +16,75 @@ namespace API.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly IUserRepo _repo;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IUserRepo _userRepo;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        private readonly ITokenService _tokenService;
 
-        public AuthService(IUserRepo repo, IConfiguration config, IMapper mapper)
+        public AuthService(UserManager<AppUser> manager, SignInManager<AppUser> signInManager,
+            ITokenService tokenService, IConfiguration config, IMapper mapper, IUserRepo userRepo)
         {
-            _repo = repo;
+            _tokenService = tokenService;
             _mapper = mapper;
-            _config = config;
+            _userManager = manager;
+            _userRepo = userRepo;
+            _signInManager = signInManager;
         }
 
         public IMapper Mapper => _mapper;
 
         public async Task<TokenToReturn> LoginAsync(UserToLogin userToLogin)
         {
-            var user = await _repo.GetSingleAsync(userToLogin.UserName);
+            userToLogin.UserName = userToLogin.UserName.ToLower();
 
-            if(user != null)
+            var userFromRepo = await _userRepo.GetSingleAsync(userToLogin.UserName);
+
+            if (userFromRepo == null)
+                throw new Exception("Wrong credentials.");
+
+            var result = await _signInManager
+                .CheckPasswordSignInAsync(userFromRepo, userToLogin.Password, false);
+
+            if (!result.Succeeded) throw new Exception("Error occurred");
+
+            var userToReturn = _mapper.Map<UserDetail>(userFromRepo);
+
+            var tokenToReturn = new TokenToReturn 
             {
-                if(PasswordManager.VerifyPasswordHash(userToLogin.Password, user.PasswordHash, user.PasswordSalt))
-                {
-                    var claims = new[]
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                        new Claim(ClaimTypes.Name, userToLogin.UserName)
-                    };
+                Token = await _tokenService.CreateTokenAsync(userFromRepo),
+                User = userToReturn
+            };
 
-                    var key = new SymmetricSecurityKey(Encoding.UTF8
-                        .GetBytes(_config.GetSection("AppSettings:Token").Value));
+            return tokenToReturn;
 
-                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-                    var tokenDescriptor = new SecurityTokenDescriptor
-                    {
-                        Subject = new ClaimsIdentity(claims),
-                        Expires = DateTime.Now.AddDays(1),
-                        SigningCredentials = creds
-                    };
-
-                    var tokenHandler = new JwtSecurityTokenHandler();
-
-                    var token = tokenHandler.CreateToken(tokenDescriptor);
-
-                    var userDetail = _mapper.Map<UserDetail>(user);
-
-                    return new TokenToReturn { Token = tokenHandler.WriteToken(token), User = userDetail };
-                }
-
-                throw new Exception("Zła nazwa użytkownika lub hasło!");
-            }
-
-            throw new Exception("Zła nazwa użytkownika lub hasło!");
- 
         }
 
         public async Task<UserDetail> RegisterAsync(UserToRegister userToRegister)
         {
-            if(userToRegister.Password != userToRegister.ConfirmPassword) 
+            if (userToRegister.Password != userToRegister.ConfirmPassword)
                 throw new Exception("Hasła nie są takie same.");
 
-            userToRegister.UserName = userToRegister.UserName.ToLower();
+            if(await _userManager.FindByNameAsync(userToRegister.UserName)!=null)
+                throw new Exception("Username is already taken.");
 
-            if (await _repo.IsUsernameTaken(userToRegister.UserName))
-                throw new Exception("Nazwa użytkownika jest już zajęta");
+            var userToCreate = _mapper.Map<AppUser>(userToRegister);
 
-            var user = _mapper.Map<User>(userToRegister);
+            var result = await _userManager.CreateAsync(userToCreate, userToRegister.Password);
 
-            byte[] passwordHash, passwordSalt;
-            PasswordManager.CreatePasswordHash(userToRegister.Password, out passwordHash, out passwordSalt);
+            if(userToRegister.Role.ToLower() == "admin") 
+            {
+                await _userManager.AddToRoleAsync(userToCreate, "Admin");
+            }
+            else 
+            {
+                await _userManager.AddToRoleAsync(userToCreate, "User");
+            }
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            if(!result.Succeeded) throw new Exception(result.Errors.ToString());
 
-            await _repo.AddAsync(user);
-
-            if(await _repo.SaveAllAsync())  
-                return _mapper.Map<UserDetail>(user);
-
-            throw new Exception("Podczas dodawania użytkownika wystąpił błąd.");
+            return _mapper.Map<UserDetail>(userToCreate);
         }
     }
 }

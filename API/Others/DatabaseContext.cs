@@ -1,13 +1,16 @@
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Others
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<AppUser, AppRole, int,
+        IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
+        IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {}
 
-        public DbSet<User> Users { get; set; }
         public DbSet<District> Districts { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<UserDistrict> UserDistricts { get; set; }
@@ -15,10 +18,22 @@ namespace API.Others
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<AppUser>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.User)
+                .HasForeignKey(u => u.UserId)
+                .IsRequired();
+
+            builder.Entity<AppRole>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.Role)
+                .HasForeignKey(u => u.RoleId)
+                .IsRequired();
+
             builder.Entity<UserDistrict>()
                 .HasKey(x => new { x.DistrctId, x.UserId });
                 
-            builder.Entity<User>()
+            builder.Entity<AppUser>()
                 .HasMany(x => x.UserDistricts)
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId)

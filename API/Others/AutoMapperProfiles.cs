@@ -1,3 +1,4 @@
+using System.Linq;
 using API.Dtos;
 using API.Entities;
 using AutoMapper;
@@ -8,12 +9,13 @@ namespace API.Others
     {
         public AutoMapperProfiles()
         {
-            CreateMap<UserToRegister, User>().ReverseMap();
+            CreateMap<UserToRegister, AppUser>().ReverseMap();
             CreateMap<Property, PropertyToReturn>()
                 .ForMember(x => x.DistrictName, opt => opt.MapFrom(src => src.District.Name));
             CreateMap<DistrictToAdd, District>().ReverseMap();
             CreateMap<PropertyToAdd, Property>();
-            CreateMap<User, UserDetail>();
+            CreateMap<AppUser, UserDetail>()
+                .ForMember(x => x.Role, opt => opt.MapFrom(src => src.UserRoles.FirstOrDefault(y => y.UserId == src.Id).Role.Name));
             CreateMap<UserDistrictToAdd, UserDistrict>();
             
         }
