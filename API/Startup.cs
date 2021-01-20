@@ -68,6 +68,7 @@ namespace API
             services.AddScoped<IPropertyService, PropertyService>();
             services.AddScoped<IUserDistrictService, UserDistrictService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserService, UserService>();
             
             services.AddIdentityCore<AppUser>(opt =>
             {
